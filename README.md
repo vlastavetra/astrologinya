@@ -37,18 +37,22 @@ to add a new indices and benchmarks.
 
 ```bash
         python -m virtualenv venv
+        or
+        python3 -m venv env
 ```
 
 - Create virtual environment version depend:
 
 ```bash
-        virtualenv venv --python=python3.10
+        virtualenv env --python=python3.11
 ```
 
 - activate
 
 ```bash
   .\venv\Scripts\activate.bat
+  or
+  source env/bin/activate
 ```
 
 - ctrl + shift + p: Python: Select interpreter
@@ -60,6 +64,8 @@ to add a new indices and benchmarks.
 
 ```bash
         pip install -r <Path_to_file>\requirements-dev.txt
+        or
+        pip3 install -r requirements.txt
 ```
 
 - deactivate:
