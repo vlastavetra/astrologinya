@@ -3,9 +3,6 @@ import asyncio
 from collections import defaultdict
 import base64
 
-import pandas as pd
-from bson import Binary, ObjectId
-
 today = datetime.datetime.utcnow().date()
 start_of_today = datetime.datetime.combine(
     today, datetime.datetime.min.time())
