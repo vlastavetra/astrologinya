@@ -11,8 +11,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 from starlette.middleware import Middleware
 from starlette.responses import RedirectResponse
-from dal.mongo import MongoDb
-from forecast.natal import calculate_natal
 
 sys.path.append(Path(__file__).parents[1].as_posix())
 
@@ -37,12 +35,6 @@ middleware = [
 
 app = FastAPI(middleware=middleware)
 app.client = AsyncIOMotorClient(MONGO_URL, tlsCAFile=certifi.where())
-
-@app.get("/natal")
-async def get_natal_card():
-    return "hi"
-    #return calculate_natal()
-    #return await MongoDb(app.client).get_natal_card()
 
 @app.get("/")
 async def root():
