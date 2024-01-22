@@ -1,21 +1,12 @@
-import datetime
-import asyncio
-from collections import defaultdict
-import base64
-
-today = datetime.datetime.utcnow().date()
-start_of_today = datetime.datetime.combine(
-    today, datetime.datetime.min.time())
-
-
 class MongoDb:
     """
     """
 
     def __init__(self, client) -> None:
         self.client = client
-        self.indices = self.client["indices"]
-        self.configuration = self.client["configuration"]
-        self.vendors = self.client["vendors"]
-        self.status = self.client["status"]
+        self.natal = self.client["natal"]
 
+    async def get_natal_card(self) -> list:
+        cursor = self.natal["moon"].find({})
+        documents = [{key: value for key, value in doc.items() if key != "_id"} async for doc in cursor]
+        return documents
