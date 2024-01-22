@@ -11,7 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 from starlette.middleware import Middleware
 from starlette.responses import RedirectResponse
-from dal.mongo import MongoDb
+from app.dal.mongo import MongoDb
 
 
 sys.path.append(Path(__file__).parents[1].as_posix())
