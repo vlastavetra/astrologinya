@@ -40,7 +40,7 @@ app.client = AsyncIOMotorClient(MONGO_URL, tlsCAFile=certifi.where())
 
 @app.get("/natal")
 async def get_natal_card():
-    return await MongoDb(app.client).get_natal_card()
+    return "hi"
 
 @app.get("/")
 async def root():
