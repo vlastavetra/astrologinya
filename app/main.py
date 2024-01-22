@@ -39,8 +39,8 @@ app = FastAPI(middleware=middleware)
 app.client = AsyncIOMotorClient(MONGO_URL, tlsCAFile=certifi.where())
 
 @app.get("/natal")
-def get_natal_card():
-    return "hi"
+async def get_natal_card():
+    return await MongoDb(app.client).get_natal_card()
 
 @app.get("/")
 async def root():
