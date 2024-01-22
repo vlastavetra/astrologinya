@@ -6,7 +6,10 @@ class MongoDb:
         self.client = client
         self.natal = self.client["natal"]
 
-    async def get_natal_card(self) -> list:
-        cursor = self.natal["moon"].find({})
-        documents = [{key: value for key, value in doc.items() if key != "_id"} async for doc in cursor]
-        return documents
+    async def get_natal_card(self, natal) -> list:
+        results = {}
+        for key, obj in natal.items():
+            collection = self.natal[key]
+            document = await collection.find_one({"sign": obj.sign}, {"sign": 1, "text": 1, "_id": 0})
+            results[key] = document
+        return results
