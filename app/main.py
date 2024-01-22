@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 from starlette.middleware import Middleware
 from starlette.responses import RedirectResponse
+from app.dal.mongo import MongoDb
 
 sys.path.append(Path(__file__).parents[1].as_posix())
 
@@ -36,20 +37,14 @@ middleware = [
 app = FastAPI(middleware=middleware)
 app.client = AsyncIOMotorClient(MONGO_URL, tlsCAFile=certifi.where())
 
-@app.on_event("startup")
-async def startup_event():
-    from app.routes.forecast import forecast_routes
-
-    app.include_router(forecast_routes, prefix="/api/v1/forecast", tags=["forecast"])
-
+@app.get("/forecast/natal-card")
+async def root():
+    return MongoDb(app.client).get_natal_card()
 
 @app.get("/")
 async def root():
     return RedirectResponse(url="/docs")
 
-@app.get("/test")
-async def root():
-    return RedirectResponse(url="/test")
 
 if __name__ == "__main__":
     uvicorn.run(
