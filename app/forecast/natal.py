@@ -9,7 +9,7 @@ def decimal_to_dms(decimal):
     seconds = round((decimal - degrees - minutes / 60) * 3600)
     return f"{degrees}:{minutes}:{seconds}"
 
-if __name__ == "__main__":
+def calculate_natal():
   date = '1986/07/11'
   time = '17:00'
   location = 'Moscow, Russia'
@@ -22,22 +22,16 @@ if __name__ == "__main__":
 
   chart = Chart(birthdate, birthplace)
 
-  sun = chart.getObject(SUN)
-  moon = chart.getObject(MOON)
-  mercury = chart.getObject(MERCURY)
-  venus = chart.getObject(VENUS)
-  mars = chart.getObject(MARS)
-  jupiter = chart.getObject(JUPITER)
-  saturn = chart.getObject(SATURN)
-  ascendant = chart.get(ASC)
-  midheaven = chart.get(MC)
+  data = {}
 
-  print(f"Sun: {sun}")
-  print(f"Moon: {moon}")
-  print(f"Mercury: {mercury}")
-  print(f"Venus: {venus}")
-  print(f"Mars: {mars}")
-  print(f"Jupiter: {jupiter}")
-  print(f"Saturn: {saturn}")
-  print(f"Ascendant: {ascendant}")
-  print(f"Midheaven: {midheaven}")
+  data["sun"] = chart.getObject(SUN)
+  data["moon"] = chart.getObject(MOON)
+  data["mercury"] = chart.getObject(MERCURY)
+  data["venus"] = chart.getObject(VENUS)
+  data["mars"] = chart.getObject(MARS)
+  data["jupiter"] = chart.getObject(JUPITER)
+  data["saturn"] = chart.getObject(SATURN)
+  data["ascendant"] = chart.get(ASC)
+  data["midheaven"] = chart.get(MC)
+
+  return data
