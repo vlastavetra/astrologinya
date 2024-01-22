@@ -47,6 +47,9 @@ async def startup_event():
 async def root():
     return RedirectResponse(url="/docs")
 
+@app.get("/test")
+async def root():
+    return RedirectResponse(url="/test")
 
 if __name__ == "__main__":
     uvicorn.run(
