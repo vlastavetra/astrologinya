@@ -13,6 +13,7 @@ from starlette.middleware import Middleware
 from starlette.responses import RedirectResponse
 from dal.mongo import MongoDb
 
+
 sys.path.append(Path(__file__).parents[1].as_posix())
 
 load_dotenv()
