@@ -12,7 +12,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from starlette.middleware import Middleware
 from starlette.responses import RedirectResponse
 from app.dal.mongo import MongoDb
-from app.forecast.natal import NatalForcastCreator
+from app.forecast.forecast import ForcastCreator
 
 
 sys.path.append(Path(__file__).parents[1].as_posix())
@@ -40,10 +40,16 @@ app = FastAPI(middleware=middleware)
 app.client = AsyncIOMotorClient(MONGO_URL, tlsCAFile=certifi.where())
 
 @app.get("/natal")
-async def get_natal_card():
-    n = NatalForcastCreator("2021/01/01", "12:00", "Moscow, Russia")
+async def get_natal_card(day, time, loc):
+    n = ForcastCreator(day, time, loc)
     forecast = n.calculate_natal()
     return await MongoDb(app.client).get_natal_card(forecast)
+
+@app.get("/house")
+async def get_house(day, time, loc):
+    h = ForcastCreator(day, time, loc)
+    forecast = h.calculate_house()
+    return forecast
 
 @app.get("/")
 async def root():
