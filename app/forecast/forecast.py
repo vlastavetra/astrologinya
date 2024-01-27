@@ -8,11 +8,12 @@ from openai import OpenAI
 
 
 class ForcastCreator:
-  def __init__(self, date="15/02/1988", time="06:00", loc="Moscow, Russia") -> None:
+  def __init__(self, date="15/02/1988", time="06:00", loc="Moscow, Russia", language="english") -> None:
     self.latitude, self.longitude = self.get_coordinates(loc) 
     self.birthdate = Datetime(date, time)
     self.birthplace = GeoPos(self.latitude, self.longitude)
     self.chart = Chart(self.birthdate, self.birthplace)
+    self.language = language
 
   def get_coordinates(self, loc):
     location_data = geocoder.arcgis(loc)
@@ -20,7 +21,7 @@ class ForcastCreator:
     if location_data.ok:
         return location_data.latlng[0], location_data.latlng[1]
 
-  def calculate_natal(self):
+  def calculate_natal(self, language):
     data = {}
 
     data["sun"] = self.chart.getObject(SUN)
@@ -33,7 +34,7 @@ class ForcastCreator:
     data["ascendant"] = self.chart.get(ASC)
     data["midheaven"] = self.chart.get(MC)
 
-    return f"discribe natal card by planets: sun in {data['sun'].sign}, moon in {data['moon'].sign}, mercury in {data['mercury'].sign}, venus in {data['venus'].sign}, mars in {data['mars'].sign}, jupiter in {data['jupiter'].sign}, saturn in {data['saturn'].sign}, ascendant in {data['ascendant'].sign}, midheaven in {data['midheaven'].sign}"
+    return f"discribe on {self.language} natal card by planets: sun in {data['sun'].sign}, moon in {data['moon'].sign}, mercury in {data['mercury'].sign}, venus in {data['venus'].sign}, mars in {data['mars'].sign}, jupiter in {data['jupiter'].sign}, saturn in {data['saturn'].sign}, ascendant in {data['ascendant'].sign}, midheaven in {data['midheaven'].sign}"
 
   
   def calculate_house(self):
@@ -53,7 +54,7 @@ class ForcastCreator:
     data["house12"] = self.chart.getHouse(HOUSE12)
   
 
-    return f"discribe natal card by houses: house 1 in {data['house1'].sign}, house 2 in {data['house2'].sign}, house 3 in {data['house3'].sign}, house 4 in {data['house4'].sign}, house 5 in {data['house5'].sign}, house 6 in {data['house6'].sign}, house 7 in {data['house7'].sign}, house 8 in {data['house8'].sign}, house 9 in {data['house9'].sign}, house 10 in {data['house10'].sign}, house 11 in {data['house11'].sign}, house 12 in {data['house12'].sign}"
+    return f"discribe on {self.language} natal card by houses: house 1 in {data['house1'].sign}, house 2 in {data['house2'].sign}, house 3 in {data['house3'].sign}, house 4 in {data['house4'].sign}, house 5 in {data['house5'].sign}, house 6 in {data['house6'].sign}, house 7 in {data['house7'].sign}, house 8 in {data['house8'].sign}, house 9 in {data['house9'].sign}, house 10 in {data['house10'].sign}, house 11 in {data['house11'].sign}, house 12 in {data['house12'].sign}"
   
   def generate_chat_response(self, key, input_text):
     client = OpenAI(api_key=key)

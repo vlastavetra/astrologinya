@@ -11,8 +11,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 from starlette.middleware import Middleware
 from starlette.responses import RedirectResponse
-from app.dal.mongo import MongoDb
-from app.forecast.forecast import ForcastCreator
+from dal.mongo import MongoDb
+from forecast.forecast import ForcastCreator
 
 
 sys.path.append(Path(__file__).parents[1].as_posix())
@@ -41,16 +41,16 @@ middleware = [
 app = FastAPI(middleware=middleware)
 app.client = AsyncIOMotorClient(MONGO_URL, tlsCAFile=certifi.where())
 
-@app.get("/natal")
-async def get_natal_card(day, time, loc):
-    n = ForcastCreator(day, time, loc)
+@app.post("/natal", responses={200: {"content": {"application/json": {}}}})
+async def get_natal_card(data: dict):
+    n = ForcastCreator(data['date'].replace("-", "/"), data['time'], f"{data['city']}, {data['country']}",  data['language'])
     promt = n.calculate_natal()
     answer = n.generate_chat_response(OPEN_AI_API_KEY, promt)
     return answer
 
-@app.get("/house")
-async def get_house(day, time, loc):
-    n = ForcastCreator(day, time, loc)
+@app.get("/house", responses={200: {"content": {"application/json": {}}}})
+async def get_house(data: dict):
+    n = ForcastCreator(data['date'].replace("-", "/"), data['time'], f"{data['city']}, {data['country']}", data['language'])
     promt = n.calculate_house()
     answer = n.generate_chat_response(OPEN_AI_API_KEY, promt)
     return answer
