@@ -19,6 +19,8 @@ sys.path.append(Path(__file__).parents[1].as_posix())
 
 load_dotenv()
 
+OPEN_AI_API_KEY = os.getenv("OPEN_AI_API_KEY")
+
 MONGO_URL = os.getenv("MONGO_URL")
 if MONGO_URL is None:
     raise ValueError("MONGO_URL is not set. Please set it in .env file.")
@@ -42,14 +44,16 @@ app.client = AsyncIOMotorClient(MONGO_URL, tlsCAFile=certifi.where())
 @app.get("/natal")
 async def get_natal_card(day, time, loc):
     n = ForcastCreator(day, time, loc)
-    forecast = n.calculate_natal()
-    return await MongoDb(app.client).get_natal_card(forecast)
+    promt = n.calculate_natal()
+    answer = n.generate_chat_response(OPEN_AI_API_KEY, promt)
+    return answer
 
 @app.get("/house")
 async def get_house(day, time, loc):
-    h = ForcastCreator(day, time, loc)
-    forecast = h.calculate_house()
-    return forecast
+    n = ForcastCreator(day, time, loc)
+    promt = n.calculate_house()
+    answer = n.generate_chat_response(OPEN_AI_API_KEY, promt)
+    return answer
 
 @app.get("/")
 async def root():
